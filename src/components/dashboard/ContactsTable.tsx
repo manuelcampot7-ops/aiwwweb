@@ -227,11 +227,10 @@ export default function ContactsTable({
               return (
                 <tr
                   key={opp.id}
-                  className={`row-enter transition-colors cursor-pointer ${isSelected ? 'bg-red-50/50' : 'bg-white hover:bg-slate-50/70'}`}
+                  className={`row-enter transition-colors ${isSelected ? 'bg-red-50/50' : 'bg-white hover:bg-slate-50/70'}`}
                   style={{ '--row-index': i } as React.CSSProperties}
-                  onClick={() => toggleOne(opp.id)}
                 >
-                  <td className="px-4 py-4" onClick={(e) => e.stopPropagation()}>
+                  <td className="px-4 py-4">
                     <input
                       type="checkbox"
                       checked={isSelected}

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import WebsiteRequestForm from '@/components/dashboard/WebsiteRequestForm';
+import { ExternalLink } from 'lucide-react';
 
 interface Request {
   id: string;
@@ -25,30 +26,57 @@ const priorityConfig: Record<string, { label: string; classes: string }> = {
   high:   { label: 'High',   classes: 'text-red-500 font-semibold' },
 };
 
-export default function WebsitePage() {
-  const [requests, setRequests] = useState<Request[]>([]);
-  const [loading, setLoading]   = useState(true);
-  const [showForm, setShowForm] = useState(false);
+function WebsitePreview({ url }: { url: string }) {
+  const displayUrl = url.replace(/^https?:\/\//, '');
 
-  const loadRequests = async () => {
+  return (
+    <div className="flex items-center justify-between bg-white border border-gray-100 rounded-xl px-4 py-3 mb-8 shadow-[0_1px_6px_rgba(0,0,0,0.04)]">
+      <div className="flex items-center gap-2.5">
+        <span className="w-2 h-2 rounded-full bg-emerald-400" />
+        <span className="text-[0.85rem] font-mono text-gray-600">{displayUrl}</span>
+      </div>
+      <a
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center gap-1.5 text-[0.78rem] font-semibold text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg transition-all duration-150"
+      >
+        <ExternalLink size={12} />
+        Open site
+      </a>
+    </div>
+  );
+}
+
+export default function WebsitePage() {
+  const [requests, setRequests]     = useState<Request[]>([]);
+  const [websiteUrl, setWebsiteUrl] = useState<string | null>(null);
+  const [loading, setLoading]       = useState(true);
+  const [showForm, setShowForm]     = useState(false);
+
+  const loadData = async () => {
     const supabase = createClient();
-    const { data } = await supabase
-      .from('website_requests')
-      .select('*')
-      .order('created_at', { ascending: false });
-    setRequests(data ?? []);
+    const { data: { user } } = await supabase.auth.getUser();
+
+    const [{ data: client }, { data: reqs }] = await Promise.all([
+      supabase.from('clients').select('website_url').eq('id', user!.id).single(),
+      supabase.from('website_requests').select('*').order('created_at', { ascending: false }),
+    ]);
+
+    setWebsiteUrl(client?.website_url ?? null);
+    setRequests(reqs ?? []);
     setLoading(false);
   };
 
-  useEffect(() => { loadRequests(); }, []);
+  useEffect(() => { loadData(); }, []);
 
   const handleClose = () => {
     setShowForm(false);
-    loadRequests();
+    loadData();
   };
 
   return (
-    <div>
+    <div className="page-enter">
       {/* Header */}
       <div className="flex items-start justify-between mb-8 gap-4 flex-wrap">
         <div>
@@ -56,7 +84,7 @@ export default function WebsitePage() {
             Website
           </h1>
           <p className="text-[0.9rem] text-gray-400">
-            Submit and track update requests for your website
+            Your live site and update requests
           </p>
         </div>
         <button
@@ -67,6 +95,14 @@ export default function WebsitePage() {
         </button>
       </div>
 
+      {/* Website preview */}
+      {!loading && websiteUrl && <WebsitePreview url={websiteUrl} />}
+
+      {/* Requests label */}
+      <p className="text-[0.62rem] font-bold tracking-[2.5px] uppercase text-gray-300 mb-3">
+        Update Requests
+      </p>
+
       {/* List */}
       {loading ? (
         <div className="flex flex-col gap-3">
@@ -75,7 +111,7 @@ export default function WebsitePage() {
           ))}
         </div>
       ) : requests.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-20 text-center">
+        <div className="flex flex-col items-center justify-center py-16 text-center">
           <div className="w-14 h-14 rounded-2xl bg-red-50 flex items-center justify-center text-2xl mb-4">
             🌐
           </div>
@@ -87,7 +123,7 @@ export default function WebsitePage() {
       ) : (
         <div className="flex flex-col gap-3">
           {requests.map((req) => {
-            const status   = statusConfig[req.status]   ?? statusConfig.pending;
+            const status   = statusConfig[req.status]     ?? statusConfig.pending;
             const priority = priorityConfig[req.priority] ?? priorityConfig.normal;
             const date = new Date(req.created_at).toLocaleDateString('en-US', {
               month: 'short', day: 'numeric', year: 'numeric',
@@ -96,7 +132,7 @@ export default function WebsitePage() {
             return (
               <div
                 key={req.id}
-                className="bg-white border border-gray-100 rounded-2xl px-6 py-5 hover:border-red-100 transition-colors"
+                className="bg-white border border-gray-100 rounded-2xl px-6 py-5 hover:border-red-100 hover:shadow-sm transition-all duration-200"
               >
                 <div className="flex items-start justify-between gap-4 flex-wrap">
                   <div className="flex-1 min-w-0">
