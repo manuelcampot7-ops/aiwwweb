@@ -65,7 +65,9 @@ export async function GET(_request: NextRequest) {
   });
 
   if (!ghlRes.ok) {
-    return Response.json({ error: 'GHL API error' }, { status: 502 });
+    const errText = await ghlRes.text();
+    console.error('GHL API error:', ghlRes.status, errText);
+    return Response.json({ error: 'GHL API error', status: ghlRes.status, detail: errText }, { status: 502 });
   }
 
   const data = await ghlRes.json();
