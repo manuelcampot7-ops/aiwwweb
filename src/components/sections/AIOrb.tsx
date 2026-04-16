@@ -20,7 +20,7 @@ export default function AIOrb() {
       onMouseLeave={() => setShowTooltip(false)}
     >
       {/* Tooltip */}
-      <div className={`absolute bottom-[calc(100%+16px)] right-0 bg-white border border-purple-500/[0.12] rounded-2xl px-5 py-4 w-[260px] shadow-lg transition-all duration-300 ${showTooltip ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-2 scale-95 pointer-events-none'}`}>
+      <div className={`absolute bottom-[calc(100%+16px)] right-0 bg-white border border-red-500/[0.12] rounded-2xl px-5 py-4 w-[260px] shadow-lg transition-all duration-300 ${showTooltip ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-2 scale-95 pointer-events-none'}`}>
         <h4 className="text-[0.9rem] font-bold text-gray-900 font-['Space_Grotesk']">🔮 AI Voice Agent</h4>
         <p className="text-[0.8rem] text-gray-500 leading-snug mt-1">Hi! I&apos;m the AI assistant. Click me to start a conversation.</p>
         <div className="absolute top-full right-7 border-8 border-transparent border-t-white" />
@@ -29,8 +29,8 @@ export default function AIOrb() {
       {/* Orb */}
       <div className="w-[68px] h-[68px] max-md:w-[58px] max-md:h-[58px] rounded-full bg-[radial-gradient(circle_at_35%_35%,#a78bfa,#7c3aed,#5b21b6)] shadow-[0_0_30px_rgba(139,92,246,0.35),0_0_60px_rgba(139,92,246,0.15),inset_0_0_20px_rgba(255,255,255,0.15)] relative animate-orb-breathe hover:scale-110 transition-transform">
         {/* Rings */}
-        <span className="absolute inset-[-6px] rounded-full border-2 border-purple-500/25 animate-orb-ring" />
-        <span className="absolute inset-[-14px] rounded-full border border-purple-500/10 animate-orb-ring [animation-delay:0.5s]" />
+        <span className="absolute inset-[-6px] rounded-full border-2 border-red-500/25 animate-orb-ring" />
+        <span className="absolute inset-[-14px] rounded-full border border-red-500/10 animate-orb-ring [animation-delay:0.5s]" />
 
         {/* Inner shine */}
         <div className="absolute inset-0 rounded-full overflow-hidden">
@@ -53,7 +53,7 @@ export default function AIOrb() {
         {[6, 12, 8, 14, 6].map((h, i) => (
           <span
             key={i}
-            className="w-[3px] rounded-[3px] bg-purple-500 animate-wave-bar"
+            className="w-[3px] rounded-[3px] bg-red-500 animate-wave-bar"
             style={{ height: `${h}px`, animationDelay: `${i * 0.15}s` }}
           />
         ))}

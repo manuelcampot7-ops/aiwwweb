@@ -1,8 +1,13 @@
 @import "tailwindcss";
 
+/* Ocultar indicador de desarrollo de Next.js */
+nextjs-portal {
+  display: none !important;
+}
+
 @theme inline {
   --color-background: #ffffff;
-  --color-foreground: #1a1033;
+  --color-foreground: #1a0505;
   --font-sans: 'Inter', system-ui, sans-serif;
 }
 
@@ -14,7 +19,7 @@ html {
 body {
   font-family: 'Inter', system-ui, sans-serif;
   background: #ffffff;
-  color: #1a1033;
+  color: #0a0a0a;
   line-height: 1.6;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
@@ -23,120 +28,394 @@ body {
 /* ===== Scroll Reveal ===== */
 .sr-element {
   opacity: 0;
-  transform: translateY(60px);
-  transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1), transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateY(36px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
 }
-
 .sr-element.visible {
   opacity: 1;
   transform: translateY(0) !important;
 }
 
-/* ===== Custom Animations ===== */
+.sr-element-left {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.sr-element-left.visible {
+  opacity: 1;
+  transform: translateX(0) !important;
+}
+
+.sr-element-right {
+  opacity: 0;
+  transform: translateX(40px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.sr-element-right.visible {
+  opacity: 1;
+  transform: translateX(0) !important;
+}
+
+.sr-element-scale {
+  opacity: 0;
+  transform: scale(0.92);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.sr-element-scale.visible {
+  opacity: 1;
+  transform: scale(1) !important;
+}
+
+/* Text clip reveal */
+.sr-text-reveal {
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 1s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.sr-text-reveal.visible {
+  clip-path: inset(0 0% 0 0) !important;
+}
+
+/* ===== Core Animations ===== */
 @keyframes aurora {
   from { background-position: 50% 50%, 50% 50%; }
-  to { background-position: 350% 50%, 350% 50%; }
+  to   { background-position: 350% 50%, 350% 50%; }
 }
-
-@keyframes phone-ring {
-  0%, 100% { transform: rotate(0deg); }
-  10% { transform: rotate(14deg); }
-  20% { transform: rotate(-10deg); }
-  30% { transform: rotate(10deg); }
-  40% { transform: rotate(-6deg); }
-  50% { transform: rotate(0deg); }
-}
-
 @keyframes call-pulse {
-  0% { transform: scale(1); opacity: 0.6; }
+  0%   { transform: scale(1); opacity: 0.6; }
   100% { transform: scale(1.15); opacity: 0; }
 }
-
-@keyframes shimmer {
-  0% { left: -100%; }
-  50%, 100% { left: 150%; }
-}
-
 @keyframes orb-breathe {
   0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.06); }
+  50%      { transform: scale(1.06); }
 }
-
 @keyframes orb-ring {
   0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.15); opacity: 0.4; }
+  50%      { transform: scale(1.15); opacity: 0.4; }
 }
-
-@keyframes wave-bar {
-  0%, 100% { transform: scaleY(1); }
-  50% { transform: scaleY(0.3); }
-}
-
 @keyframes spin-slow {
   to { transform: rotate(360deg); }
 }
-
 @keyframes counter-spin {
   to { transform: rotate(-360deg); }
 }
-
-@keyframes ambient-float {
-  0%, 100% { transform: translate(0, 0); }
-  25% { transform: translate(30px, -20px); }
-  50% { transform: translate(-20px, 30px); }
-  75% { transform: translate(20px, 20px); }
+@keyframes orb-core-pulse {
+  0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+  50%      { opacity: 1; transform: translate(-50%, -50%) scale(1.3); }
 }
-
 @keyframes dot-pulse {
   0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.3; transform: scale(0.8); }
+  50%      { opacity: 0.3; transform: scale(0.8); }
 }
 
-/* ===== Animation utility classes ===== */
-.animate-aurora {
-  animation: aurora 60s linear infinite;
+/* ===== Marquee ===== */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@keyframes marquee-reverse {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
+}
+@keyframes marquee-brand {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee 26s linear infinite;
+  will-change: transform;
+}
+.animate-marquee-brand {
+  animation: marquee-brand 35s linear infinite;
+  will-change: transform;
+}
+.animate-marquee-brand-reverse {
+  animation: marquee-reverse 40s linear infinite;
+  will-change: transform;
 }
 
-.animate-phone-ring {
-  animation: phone-ring 2s ease-in-out infinite;
+/* ===== Utility Animation Classes ===== */
+.animate-spin-slow   { animation: spin-slow 3s linear infinite; }
+.animate-counter-spin { animation: counter-spin 30s linear infinite; }
+.animate-orb-breathe  { animation: orb-breathe 4s ease-in-out infinite; }
+.animate-orb-ring     { animation: orb-ring 3s ease-in-out infinite; }
+.animate-call-pulse   { animation: call-pulse 2s ease-out infinite; }
+.animate-dot-pulse    { animation: dot-pulse 2s infinite; }
+
+/* ===== Hero Scan Line ===== */
+@keyframes h-scan {
+  0%   { transform: translateX(-100%); opacity: 0; }
+  3%   { opacity: 1; }
+  97%  { opacity: 1; }
+  100% { transform: translateX(200%); opacity: 0; }
+}
+.animate-h-scan {
+  animation: h-scan 2s cubic-bezier(0.25, 0.1, 0.25, 1) 0.7s forwards;
+  will-change: transform, opacity;
 }
 
-.animate-call-pulse {
-  animation: call-pulse 2s ease-out infinite;
+/* ===== Data Float (hero floating text) ===== */
+@keyframes data-float-up {
+  0%   { transform: translateY(100vh); opacity: 0; }
+  5%   { opacity: 1; }
+  95%  { opacity: 1; }
+  100% { transform: translateY(-100vh); opacity: 0; }
 }
 
-.animate-shimmer {
-  animation: shimmer 3s ease-in-out infinite;
+/* ===== Card Scan Line on Hover ===== */
+@keyframes card-scan {
+  0%   { top: -2px; opacity: 0; }
+  6%   { opacity: 1; }
+  94%  { opacity: 1; }
+  100% { top: calc(100% + 2px); opacity: 0; }
+}
+.card-scan-hover {
+  position: relative;
+  overflow: hidden;
+}
+.card-scan-hover::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -2px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 5%, rgba(220,38,38,0.5), transparent 95%);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+.card-scan-hover:hover::after {
+  animation: card-scan 1s ease-in-out forwards;
 }
 
-.animate-orb-breathe {
-  animation: orb-breathe 4s ease-in-out infinite;
+/* ===== Shimmer Button ===== */
+@keyframes shimmer-sweep {
+  0%   { transform: translateX(-100%) skewX(-15deg); }
+  100% { transform: translateX(200%) skewX(-15deg); }
+}
+.btn-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.btn-shimmer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  transform: translateX(-100%) skewX(-15deg);
+  pointer-events: none;
+}
+.btn-shimmer:hover::before {
+  animation: shimmer-sweep 0.65s ease forwards;
 }
 
-.animate-orb-ring {
-  animation: orb-ring 3s ease-in-out infinite;
+/* ===== Pulse Ring (CTA background) ===== */
+@keyframes pulse-ring-expand {
+  0%   { transform: translate(-50%, -50%) scale(0.8); opacity: 0.35; }
+  100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; }
 }
 
-.animate-wave-bar {
-  animation: wave-bar 1s ease-in-out infinite;
+/* ===== Glitch Text ===== */
+@keyframes glitch-flicker {
+  0%, 93%, 100% { opacity: 1; transform: none; }
+  94%  { opacity: 0.8; transform: translateX(-2px) skewX(-0.5deg); }
+  95%  { opacity: 1; transform: translateX(2px); }
+  96%  { opacity: 0.9; transform: translateX(-1px) skewX(0.5deg); }
+  97%  { opacity: 1; transform: none; }
 }
 
-.animate-spin-slow {
-  animation: spin-slow 3s linear infinite;
+/* ===== Background Patterns ===== */
+.bg-dots {
+  background-image: radial-gradient(circle at 1px 1px, rgba(0,0,0,0.035) 1px, transparent 0);
+  background-size: 28px 28px;
+}
+.bg-dots-dark {
+  background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.035) 1px, transparent 0);
+  background-size: 28px 28px;
+}
+.bg-circuit {
+  background-image:
+    linear-gradient(rgba(220,38,38,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(220,38,38,0.025) 1px, transparent 1px),
+    linear-gradient(rgba(220,38,38,0.012) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(220,38,38,0.012) 1px, transparent 1px);
+  background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
 }
 
-.animate-counter-spin {
-  animation: counter-spin 30s linear infinite;
+/* ===== Animated Gradient Border ===== */
+@property --glow-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes glow-rotate {
+  from { --glow-angle: 0deg; }
+  to   { --glow-angle: 360deg; }
+}
+.glow-border-animated {
+  --glow-angle: 0deg;
+  border-image: conic-gradient(from var(--glow-angle), transparent 35%, rgba(220,38,38,0.65) 50%, transparent 65%) 1;
+  animation: glow-rotate 3s linear infinite;
 }
 
-.animate-ambient-float {
-  animation: ambient-float 20s ease-in-out infinite;
+/* ===== Image Scan Hover ===== */
+@keyframes img-scan {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+.img-scan-hover {
+  position: relative;
+  overflow: hidden;
+}
+.img-scan-hover::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: linear-gradient(to bottom, transparent, rgba(220,38,38,0.06), transparent);
+  transform: translateY(-100%);
+  pointer-events: none;
+  z-index: 2;
+}
+.img-scan-hover:hover::after {
+  animation: img-scan 0.8s ease forwards;
 }
 
-.animate-ambient-float-reverse {
-  animation: ambient-float 25s ease-in-out infinite reverse;
+/* ===== Focus Glow for Inputs ===== */
+.input-glow:focus {
+  box-shadow: 0 0 0 1px rgba(220,38,38,0.3), 0 4px 20px rgba(220,38,38,0.08);
 }
 
-.animate-dot-pulse {
-  animation: dot-pulse 2s infinite;
+/* ===== Dashed Line Animation ===== */
+@keyframes dash-flow {
+  from { stroke-dashoffset: 24; }
+  to   { stroke-dashoffset: 0; }
+}
+
+/* ===== Line Draw ===== */
+@keyframes line-draw {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+.animate-line-draw {
+  animation: line-draw 1.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+  transform-origin: left center;
+}
+
+/* ===== Gentle float ===== */
+@keyframes float-gentle {
+  0%, 100% { transform: translateY(0px); }
+  50%      { transform: translateY(-10px); }
+}
+.animate-float {
+  animation: float-gentle 4s ease-in-out infinite;
+}
+
+/* ===== Advanced Scroll Animations ===== */
+
+/* Rotate in */
+.sr-element-rotate {
+  opacity: 0;
+  transform: rotate(6deg) translateY(30px);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.sr-element-rotate.visible {
+  opacity: 1;
+  transform: rotate(0deg) translateY(0) !important;
+}
+
+/* Blur in */
+.sr-element-blur {
+  opacity: 0;
+  filter: blur(12px);
+  transform: translateY(20px);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), filter 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.sr-element-blur.visible {
+  opacity: 1;
+  filter: blur(0px) !important;
+  transform: translateY(0) !important;
+}
+
+/* Scale + Rotate */
+.sr-element-scale-rotate {
+  opacity: 0;
+  transform: scale(0.85) rotate(-3deg);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.sr-element-scale-rotate.visible {
+  opacity: 1;
+  transform: scale(1) rotate(0deg) !important;
+}
+
+/* Clip reveal from bottom */
+.sr-clip-up {
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 0.9s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.sr-clip-up.visible {
+  clip-path: inset(0 0 0 0) !important;
+}
+
+/* Word-by-word reveal */
+.sr-words .sr-word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.sr-words.visible .sr-word {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Parallax element — controlled via JS */
+.parallax {
+  will-change: transform;
+  transition: none;
+}
+
+/* Draw line animation */
+.sr-line-draw {
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 1.2s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.sr-line-draw.visible {
+  transform: scaleX(1) !important;
+}
+
+/* Stagger utility delays */
+.sr-delay-1 { transition-delay: 0.08s !important; }
+.sr-delay-2 { transition-delay: 0.16s !important; }
+.sr-delay-3 { transition-delay: 0.24s !important; }
+.sr-delay-4 { transition-delay: 0.32s !important; }
+.sr-delay-5 { transition-delay: 0.40s !important; }
+.sr-delay-6 { transition-delay: 0.48s !important; }
+.sr-delay-7 { transition-delay: 0.56s !important; }
+.sr-delay-8 { transition-delay: 0.64s !important; }
+
+/* Section divider draw */
+@keyframes divider-draw {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* Ticker tape for data */
+@keyframes ticker-slide {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(-100%); }
+}
+
+/* Scroll-linked fade sections */
+.section-fade-in {
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+.section-fade-in.visible {
+  opacity: 1;
 }

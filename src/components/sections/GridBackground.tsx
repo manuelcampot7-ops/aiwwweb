@@ -7,12 +7,10 @@ export default function GridBackground() {
   const revealRef = useRef<SVGSVGElement>(null);
   const [show, setShow] = useState(false);
   const offsetRef = useRef({ x: 0, y: 0 });
-  const mouseRef = useRef({ x: -9999, y: -9999 });
+  const mouseRef  = useRef({ x: -9999, y: -9999 });
 
   useEffect(() => {
-    const handleScroll = () => {
-      setShow(window.scrollY > window.innerHeight * 0.7);
-    };
+    const handleScroll = () => setShow(window.scrollY > window.innerHeight * 0.7);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -21,8 +19,8 @@ export default function GridBackground() {
     const CELL = 40;
 
     function buildGrid(svg: SVGSVGElement, id: string) {
-      const w = window.innerWidth + CELL * 2;
-      const h = window.innerHeight + CELL * 2;
+      const w  = window.innerWidth + CELL * 2;
+      const h  = window.innerHeight + CELL * 2;
       const ns = 'http://www.w3.org/2000/svg';
       svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
       svg.setAttribute('width', String(w));
@@ -30,7 +28,7 @@ export default function GridBackground() {
       svg.innerHTML = '';
 
       const defs = document.createElementNS(ns, 'defs');
-      const pat = document.createElementNS(ns, 'pattern');
+      const pat  = document.createElementNS(ns, 'pattern');
       pat.setAttribute('id', id);
       pat.setAttribute('width', String(CELL));
       pat.setAttribute('height', String(CELL));
@@ -93,10 +91,10 @@ export default function GridBackground() {
 
     const handleMouseMove = (e: MouseEvent) => {
       mouseRef.current = { x: e.clientX, y: e.clientY };
-      if (revealRef.current) revealRef.current.classList.add('!opacity-35');
+      if (revealRef.current) revealRef.current.classList.add('!opacity-25');
     };
     const handleMouseLeave = () => {
-      if (revealRef.current) revealRef.current.classList.remove('!opacity-35');
+      if (revealRef.current) revealRef.current.classList.remove('!opacity-25');
     };
 
     document.addEventListener('mousemove', handleMouseMove);
@@ -111,14 +109,9 @@ export default function GridBackground() {
   }, []);
 
   return (
-    <>
-      <div className={`fixed inset-0 z-0 pointer-events-none overflow-hidden transition-opacity duration-600 ${show ? 'opacity-100' : 'opacity-0'}`}>
-        <svg ref={staticRef} className="absolute inset-0 w-full h-full opacity-[0.04] text-purple-500" />
-        <svg ref={revealRef} className="absolute inset-0 w-full h-full opacity-0 transition-opacity duration-400 text-purple-400" />
-      </div>
-      {/* Ambient orbs */}
-      <div className="fixed pointer-events-none rounded-full z-0 w-[40vw] h-[40vw] -right-[15%] -top-[15%] bg-purple-500/[0.06] blur-[120px] animate-ambient-float" />
-      <div className="fixed pointer-events-none rounded-full z-0 w-[35vw] h-[35vw] -left-[10%] -bottom-[15%] bg-indigo-500/[0.05] blur-[120px] animate-ambient-float-reverse" />
-    </>
+    <div className={`fixed inset-0 z-0 pointer-events-none overflow-hidden transition-opacity duration-600 ${show ? 'opacity-100' : 'opacity-0'}`}>
+      <svg ref={staticRef} className="absolute inset-0 w-full h-full opacity-[0.03] text-neutral-400" />
+      <svg ref={revealRef} className="absolute inset-0 w-full h-full opacity-0 transition-opacity duration-400 text-red-400" />
+    </div>
   );
 }
