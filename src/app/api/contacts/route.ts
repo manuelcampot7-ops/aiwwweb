@@ -1,10 +1,38 @@
 import { type NextRequest } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 
+async function getCallSummary(contactId: string): Promise<string | null> {
+  try {
+    const res = await fetch(
+      `https://services.leadconnectorhq.com/contacts/${contactId}/notes`,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.GHL_API_KEY}`,
+          Version: '2021-07-28',
+        },
+        cache: 'no-store',
+      }
+    );
+    if (!res.ok) return null;
+    const data = await res.json();
+    const note = data.notes
+      ?.slice()
+      .sort((a: { dateAdded: string }, b: { dateAdded: string }) =>
+        new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime()
+      )
+      .find((n: { body?: string }) => n.body?.includes('AI Call with:'));
+    if (!note) return null;
+    const match = note.body.match(/Call Summary:\n([\s\S]*?)(?:\n\nFetched info:|-{10,})/);
+    return match ? match[1].trim() : null;
+  } catch {
+    return null;
+  }
+}
+
 export async function GET(_request: NextRequest) {
   const supabase = await createClient();
-
   const { data: { user }, error: authError } = await supabase.auth.getUser();
+
   if (!user || authError) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 });
   }
@@ -41,5 +69,19 @@ export async function GET(_request: NextRequest) {
   }
 
   const data = await ghlRes.json();
-  return Response.json(data);
+  const opps = data.opportunities ?? [];
+
+  // Fetch call summaries in parallel
+  const summaries = await Promise.all(
+    opps.map((opp: { contact?: { id?: string } }) =>
+      opp.contact?.id ? getCallSummary(opp.contact.id) : Promise.resolve(null)
+    )
+  );
+
+  const enriched = opps.map((opp: object, i: number) => ({
+    ...opp,
+    callSummary: summaries[i],
+  }));
+
+  return Response.json({ opportunities: enriched });
 }
