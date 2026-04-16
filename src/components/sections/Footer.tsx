@@ -90,7 +90,15 @@ export default function Footer() {
       <div className="border-t border-white/[0.04]">
         <div className="max-w-[1180px] mx-auto px-6 py-5 flex flex-col md:flex-row items-center justify-between gap-3">
           <p className="text-white/16 text-[0.75rem] font-mono">&copy; 2026 AI WWWeb. All rights reserved.</p>
-          <p className="text-white/12 text-[0.72rem] font-mono tracking-wider">BUILT WITH AI &middot; POWERED BY RESULTS</p>
+          <div className="flex items-center gap-4">
+            <p className="text-white/12 text-[0.72rem] font-mono tracking-wider">BUILT WITH AI &middot; POWERED BY RESULTS</p>
+            <a
+              href="/login"
+              className="text-white/20 text-[0.68rem] font-mono hover:text-white/50 transition-colors duration-200 border border-white/[0.06] hover:border-white/20 px-2.5 py-1 rounded"
+            >
+              Client Login
+            </a>
+          </div>
         </div>
       </div>
 
