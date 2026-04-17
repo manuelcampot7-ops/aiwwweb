@@ -16,7 +16,7 @@ export default function CTA() {
   };
 
   return (
-    <section id="contact" className="relative py-24 md:py-32 overflow-hidden bg-[#080808]">
+    <section id="contact" className="relative py-24 md:py-32 overflow-hidden bg-white">
 
       {/* Top red accent line */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-red-600/35 to-transparent" />
@@ -67,12 +67,12 @@ export default function CTA() {
           <span className="w-6 h-px bg-red-500" />
         </div>
 
-        <h2 className="font-['Space_Grotesk'] text-[clamp(2.2rem,5.5vw,4.2rem)] font-extrabold tracking-[-0.04em] text-white leading-[1.04] mb-4 sr-element-blur sr-delay-1">
+        <h2 className="font-['Space_Grotesk'] text-[clamp(2.2rem,5.5vw,4.2rem)] font-extrabold tracking-[-0.04em] text-[#0a0a0a] leading-[1.04] mb-4 sr-element-blur sr-delay-1">
           Ready to Grow<br />
           <span className="bg-gradient-to-br from-red-400 to-red-600 bg-clip-text text-transparent">Your Business?</span>
         </h2>
 
-        <p className="text-white/30 text-[0.9rem] leading-relaxed mb-10 sr-element sr-delay-2">
+        <p className="text-gray-500 text-[0.9rem] leading-relaxed mb-10 sr-element sr-delay-2">
           Let&apos;s build your website and AI system in 48 hours. No contracts. No technical headaches.
         </p>
 
@@ -82,14 +82,14 @@ export default function CTA() {
             placeholder="Your Name"
             value={name}
             onChange={e => setName(e.target.value)}
-            className="input-glow w-full px-5 py-3.5 bg-transparent border border-white/[0.1] text-white placeholder-white/22 text-[0.87rem] font-mono focus:outline-none focus:border-red-500/50 transition-all duration-300"
+            className="input-glow w-full px-5 py-3.5 bg-white border border-gray-200 text-[#0a0a0a] placeholder-gray-400 text-[0.87rem] font-mono focus:outline-none focus:border-red-500/50 transition-all duration-300"
           />
           <input
             type="email"
             placeholder="Your Email"
             value={email}
             onChange={e => setEmail(e.target.value)}
-            className="input-glow w-full px-5 py-3.5 bg-transparent border border-white/[0.1] text-white placeholder-white/22 text-[0.87rem] font-mono focus:outline-none focus:border-red-500/50 transition-all duration-300"
+            className="input-glow w-full px-5 py-3.5 bg-white border border-gray-200 text-[#0a0a0a] placeholder-gray-400 text-[0.87rem] font-mono focus:outline-none focus:border-red-500/50 transition-all duration-300"
           />
           <button
             type="submit"
@@ -100,12 +100,12 @@ export default function CTA() {
         </form>
 
         <div className="flex items-center justify-center gap-6 mt-8 sr-element sr-delay-4">
-          <a href="mailto:hello@aiwwweb.com" className="flex items-center gap-2 text-white/25 text-[0.78rem] font-mono hover:text-white/50 transition-colors">
+          <a href="mailto:hello@aiwwweb.com" className="flex items-center gap-2 text-gray-500 text-[0.78rem] font-mono hover:text-gray-700 transition-colors">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
             hello@aiwwweb.com
           </a>
-          <span className="w-px h-3 bg-white/10" />
-          <span className="flex items-center gap-2 text-white/22 text-[0.78rem] font-mono">
+          <span className="w-px h-3 bg-gray-200" />
+          <span className="flex items-center gap-2 text-gray-500 text-[0.78rem] font-mono">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
             Florida, USA
           </span>

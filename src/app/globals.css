@@ -6,7 +6,7 @@ nextjs-portal {
 }
 
 @theme inline {
-  --color-background: #ffffff;
+  --color-background: #fefefe;
   --color-foreground: #1a0505;
   --font-sans: 'Inter', system-ui, sans-serif;
 }
@@ -18,7 +18,7 @@ html {
 
 body {
   font-family: 'Inter', system-ui, sans-serif;
-  background: #ffffff;
+  background: #fefefe;
   color: #0a0a0a;
   line-height: 1.6;
   overflow-x: hidden;

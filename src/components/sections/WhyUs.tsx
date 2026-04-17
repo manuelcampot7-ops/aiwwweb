@@ -78,7 +78,7 @@ function CountUp({ target, suffix }: { target: number; suffix: string }) {
   }, [target]);
 
   return (
-    <div ref={ref} className="font-['Space_Grotesk'] text-[2.6rem] font-extrabold text-white mb-1.5 leading-none">
+    <div ref={ref} className="font-['Space_Grotesk'] text-[2.6rem] font-extrabold text-[#0a0a0a] mb-1.5 leading-none">
       {count}{suffix}
     </div>
   );
@@ -150,7 +150,7 @@ export default function WhyUs() {
   return (
     <section
       id="why"
-      className="relative py-24 md:py-32 bg-[#080808] overflow-hidden"
+      className="relative py-24 md:py-32 bg-white overflow-hidden"
       onMouseMove={(e) => setMouse({ x: e.clientX, y: e.clientY })}
     >
 
@@ -161,7 +161,7 @@ export default function WhyUs() {
           alt=""
           className="w-full h-full object-cover opacity-[0.06]"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#080808] via-transparent to-[#080808]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-white via-white/90 to-white" />
       </div>
 
       {/* Floating particles */}
@@ -179,7 +179,7 @@ export default function WhyUs() {
             <span className="text-[0.62rem] font-mono font-bold tracking-[5px] uppercase text-red-500">Why AI WWWeb</span>
             <span className="w-6 h-px bg-red-500" />
           </div>
-          <h2 className="font-['Space_Grotesk'] text-[clamp(2rem,4.5vw,4rem)] font-extrabold tracking-[-0.04em] text-white leading-[1.04] max-w-[680px] mx-auto">
+          <h2 className="font-['Space_Grotesk'] text-[clamp(2rem,4.5vw,4rem)] font-extrabold tracking-[-0.04em] text-[#0a0a0a] leading-[1.04] max-w-[680px] mx-auto">
             We Don&apos;t Just Build Websites.{' '}
             <span className="bg-gradient-to-br from-red-400 to-red-600 bg-clip-text text-transparent">
               We Build Machines That Sell.
@@ -192,10 +192,10 @@ export default function WhyUs() {
           {stats.map((s, i) => (
             <div
               key={s.label}
-              className={`sr-element-scale-rotate sr-delay-${i + 1} border border-white/[0.07] p-6 text-center transition-all duration-400 hover:border-red-500/20 hover:bg-white/[0.02]`}
+              className={`sr-element-scale-rotate sr-delay-${i + 1} border border-gray-200 p-6 text-center transition-all duration-400 hover:border-red-500/20 hover:bg-red-50/30`}
             >
               <CountUp target={s.value} suffix={s.suffix} />
-              <div className="text-[0.68rem] font-mono text-white/30 tracking-wide uppercase">{s.label}</div>
+              <div className="text-[0.68rem] font-mono text-gray-500 tracking-wide uppercase">{s.label}</div>
             </div>
           ))}
         </div>
@@ -205,7 +205,7 @@ export default function WhyUs() {
           {reasons.map((r, i) => (
             <div
               key={r.title}
-              className={`${i % 2 === 0 ? 'sr-element-left' : 'sr-element-right'} sr-delay-${i + 1} group relative border border-white/[0.07] p-6 flex gap-4 items-start transition-all duration-400 hover:border-red-500/20 overflow-hidden`}
+              className={`${i % 2 === 0 ? 'sr-element-left' : 'sr-element-right'} sr-delay-${i + 1} group relative border border-gray-200 p-6 flex gap-4 items-start transition-all duration-400 hover:border-red-500/20 overflow-hidden`}
             >
               {/* Pointer-following glow */}
               <div
@@ -219,8 +219,8 @@ export default function WhyUs() {
                 {r.icon}
               </div>
               <div className="relative z-10">
-                <h3 className="font-['Space_Grotesk'] text-[0.95rem] font-extrabold text-white mb-1.5 tracking-tight">{r.title}</h3>
-                <p className="text-white/32 text-[0.84rem] leading-relaxed">{r.desc}</p>
+                <h3 className="font-['Space_Grotesk'] text-[0.95rem] font-extrabold text-[#0a0a0a] mb-1.5 tracking-tight">{r.title}</h3>
+                <p className="text-gray-600 text-[0.84rem] leading-relaxed">{r.desc}</p>
               </div>
             </div>
           ))}
@@ -229,7 +229,7 @@ export default function WhyUs() {
       </div>
 
       {/* Gradient transition to light */}
-      <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-b from-transparent to-[#f8f8f8] pointer-events-none z-10" />
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent pointer-events-none z-10" />
     </section>
   );
 }

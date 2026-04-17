@@ -22,7 +22,7 @@ export default function AIOrb() {
       {/* Tooltip */}
       <div className={`absolute bottom-[calc(100%+16px)] right-0 bg-white border border-red-500/[0.12] rounded-2xl px-5 py-4 w-[260px] shadow-lg transition-all duration-300 ${showTooltip ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-2 scale-95 pointer-events-none'}`}>
         <h4 className="text-[0.9rem] font-bold text-gray-900 font-['Space_Grotesk']">🔮 AI Voice Agent</h4>
-        <p className="text-[0.8rem] text-gray-500 leading-snug mt-1">Hi! I&apos;m the AI assistant. Click me to start a conversation.</p>
+        <p className="text-[0.8rem] text-gray-600 leading-snug mt-1">Hi! I&apos;m the AI assistant. Click me to start a conversation.</p>
         <div className="absolute top-full right-7 border-8 border-transparent border-t-white" />
       </div>
 

@@ -60,7 +60,7 @@ export default function Nav() {
         {/* Logo */}
         <a href="#" className="group/logo font-['Space_Grotesk'] font-extrabold text-[1.4rem] tracking-tight shrink-0 relative">
           <span className="bg-gradient-to-br from-red-500 to-red-700 bg-clip-text text-transparent group-hover/logo:from-red-400 group-hover/logo:to-red-600 transition-all duration-300">AI</span>
-          <span className={`transition-colors duration-400 ${scrolled ? 'text-[#0a0a0a]' : 'text-white'}`}>WWWEB</span>
+          <span className="transition-colors duration-400 text-[#0a0a0a]">WWWEB</span>
           <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-gradient-to-r from-red-500 to-red-700 group-hover/logo:w-full transition-all duration-400" />
         </a>
 
@@ -73,13 +73,13 @@ export default function Nav() {
               className={`relative text-[0.82rem] font-medium transition-all duration-300 bg-transparent border-none cursor-pointer tracking-wide ${
                 scrolled
                   ? activeSection === link.id ? 'text-red-600' : 'text-[#555] hover:text-red-600'
-                  : activeSection === link.id ? 'text-white' : 'text-white/50 hover:text-white/90'
+                  : activeSection === link.id ? 'text-red-600' : 'text-gray-500 hover:text-gray-700'
               }`}
             >
               {link.label}
               {/* Active dot */}
               <span
-                className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-red-500 transition-all duration-300"
+                className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-red-600 transition-all duration-300"
                 style={{ opacity: activeSection === link.id ? 1 : 0, transform: `translateX(-50%) scale(${activeSection === link.id ? 1 : 0})` }}
               />
             </button>
@@ -92,7 +92,7 @@ export default function Nav() {
           className={`btn-shimmer px-5 py-2 text-[0.8rem] font-semibold border transition-all duration-300 shrink-0 hover:-translate-y-0.5 ${
             scrolled
               ? 'text-red-600 border-red-200 hover:bg-red-50 hover:border-red-300 hover:shadow-[0_4px_16px_rgba(220,38,38,0.12)]'
-              : 'text-white/65 border-white/18 hover:border-white/40 hover:text-white hover:shadow-[0_4px_16px_rgba(255,255,255,0.06)]'
+              : 'text-red-600 border-red-200 hover:bg-red-50 hover:border-red-300 hover:shadow-[0_4px_16px_rgba(220,38,38,0.12)]'
           }`}
         >
           Client Login

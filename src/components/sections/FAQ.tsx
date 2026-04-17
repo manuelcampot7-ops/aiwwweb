@@ -17,7 +17,7 @@ export default function FAQ() {
   return (
     <section id="faq" className="relative py-24 md:py-28 bg-white bg-dots overflow-hidden">
 
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#e0e0e0] to-transparent" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
 
       {/* Parallax decorative */}
       <div data-parallax="0.09" className="absolute top-24 right-10 w-20 h-20 border border-red-100/30 rounded-full pointer-events-none hidden md:block" />
@@ -32,7 +32,7 @@ export default function FAQ() {
           <h2 className="font-['Space_Grotesk'] text-[clamp(2rem,4vw,3.2rem)] font-extrabold tracking-[-0.04em] text-[#0a0a0a] mb-3 sr-words">
             Got Questions?
           </h2>
-          <p className="text-[#9ca3af] text-[0.9rem] max-w-[360px] mx-auto leading-relaxed">
+          <p className="text-gray-500 text-[0.9rem] max-w-[360px] mx-auto leading-relaxed">
             Here are the most common ones. Don&apos;t see yours? Just reach out.
           </p>
         </div>
@@ -41,8 +41,8 @@ export default function FAQ() {
           {faqs.map((faq, i) => (
             <div
               key={i}
-              className={`${i % 2 === 0 ? 'sr-element-left' : 'sr-element-right'} sr-delay-${i + 1} border-b transition-all duration-300 ${
-                i === 0 ? 'border-t border-b-[#e8e8e8]' : 'border-b-[#e8e8e8]'
+              className={`border-b transition-all duration-300 ${
+                i === 0 ? 'border-t border-b-gray-200' : 'border-b-gray-200'
               } ${openIndex === i ? 'border-t-red-500 bg-red-50/30' : ''}`}
             >
               <button
@@ -54,7 +54,7 @@ export default function FAQ() {
                   <span>{faq.q}</span>
                 </span>
                 <span
-                  className="shrink-0 w-6 h-6 border border-[#d8d8d8] flex items-center justify-center text-[#888] transition-all duration-300 group-hover:border-red-300 group-hover:text-red-500"
+                  className="shrink-0 w-6 h-6 border border-gray-200 flex items-center justify-center text-gray-600 transition-all duration-300 group-hover:border-red-300 group-hover:text-red-500"
                   style={{ transform: openIndex === i ? 'rotate(45deg)' : 'none', borderColor: openIndex === i ? '#dc2626' : undefined, color: openIndex === i ? '#dc2626' : undefined }}
                 >
                   <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
@@ -66,7 +66,7 @@ export default function FAQ() {
                 className="overflow-hidden transition-all duration-400"
                 style={{ maxHeight: openIndex === i ? '280px' : '0px' }}
               >
-                <div className="px-4 pb-5 text-[0.86rem] text-[#6b7280] leading-relaxed pl-[calc(1rem+2.5rem)]">
+                <div className="px-4 pb-5 text-[0.86rem] text-gray-600 leading-relaxed pl-[calc(1rem+2.5rem)]">
                   {faq.a}
                 </div>
               </div>

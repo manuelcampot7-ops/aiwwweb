@@ -35,7 +35,7 @@ export default function Portfolio() {
   return (
     <section id="portfolio" className="relative py-24 md:py-32 bg-white bg-dots">
 
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#e0e0e0] to-transparent" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
 
       {/* Parallax decorative */}
       <div data-parallax="0.12" className="absolute top-32 right-6 w-28 h-28 border border-red-100/40 rounded-full pointer-events-none hidden md:block" />
@@ -53,7 +53,7 @@ export default function Portfolio() {
               Built & Launched
             </h2>
           </div>
-          <p className="text-[#9ca3af] text-[0.87rem] max-w-[260px] leading-relaxed mt-4 md:mt-0">
+          <p className="text-gray-500 text-[0.87rem] max-w-[260px] leading-relaxed mt-4 md:mt-0">
             Real businesses. Real results. Every site powered by AI from day one.
           </p>
         </div>
@@ -70,7 +70,7 @@ export default function Portfolio() {
                 rel="noopener noreferrer"
                 className={`${anim} sr-delay-${i + 1} group block`}
               >
-                <div className="border border-[#e2e2e2] rounded-xl overflow-hidden transition-all duration-500 hover:border-[#0a0a0a] hover:shadow-[0_20px_60px_rgba(0,0,0,0.10)] hover:-translate-y-0.5">
+                <div className="border border-gray-200 rounded-xl overflow-hidden transition-all duration-500 hover:border-[#0a0a0a] hover:shadow-[0_20px_60px_rgba(0,0,0,0.10)] hover:-translate-y-0.5">
                   <div className="grid md:grid-cols-[1fr_1.6fr] min-h-[220px]">
 
                     {/* Image with scan hover + parallax */}
@@ -95,13 +95,13 @@ export default function Portfolio() {
                     <div className="flex flex-col justify-center p-7 lg:p-9 bg-white group-hover:bg-[#fafafa] transition-colors duration-400">
                       <span className="text-[0.6rem] font-mono font-bold tracking-[4px] uppercase text-red-500 mb-2">{p.category}</span>
                       <h3 className="font-['Space_Grotesk'] text-[1.35rem] font-extrabold text-[#0a0a0a] mb-2 tracking-tight group-hover:text-red-600 transition-colors duration-300">{p.name}</h3>
-                      <p className="text-[#6b7280] text-[0.86rem] leading-relaxed mb-5 max-w-[420px]">{p.desc}</p>
+                      <p className="text-gray-600 text-[0.86rem] leading-relaxed mb-5 max-w-[420px]">{p.desc}</p>
                       <div className="flex flex-wrap gap-2 mb-5">
                         {p.tags.map(t => (
-                          <span key={t} className="px-3 py-1 text-[0.62rem] font-mono font-bold border border-[#e2e2e2] text-[#888] group-hover:border-red-200 group-hover:text-red-500 transition-colors duration-300">{t}</span>
+                          <span key={t} className="px-3 py-1 text-[0.62rem] font-mono font-bold border border-gray-200 text-gray-600 group-hover:border-red-200 group-hover:text-red-500 transition-colors duration-300">{t}</span>
                         ))}
                       </div>
-                      <div className="flex items-center gap-2 text-[0.78rem] font-bold text-[#b0b0b0] group-hover:text-red-500 transition-all duration-300 group-hover:gap-3">
+                      <div className="flex items-center gap-2 text-[0.78rem] font-bold text-gray-500 group-hover:text-red-500 transition-all duration-300 group-hover:gap-3">
                         <span>View Live Site</span>
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
                           <line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/>
@@ -117,8 +117,8 @@ export default function Portfolio() {
         </div>
       </div>
 
-      {/* Gradient into dark WhyUs section */}
-      <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-b from-transparent to-[#080808] pointer-events-none z-10" />
+      {/* Gradient transition to WhyUs section */}
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent pointer-events-none z-10" />
     </section>
   );
 }

@@ -26,7 +26,7 @@ export default function HowItWorks() {
   return (
     <section className="relative py-24 md:py-32 bg-[#fafafa] overflow-hidden">
 
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#e0e0e0] to-transparent" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
 
       {/* Parallax decorative elements */}
       <div data-parallax="0.1" className="absolute top-16 left-12 w-24 h-24 border border-red-200/30 rounded-full pointer-events-none hidden md:block" />
@@ -45,7 +45,7 @@ export default function HowItWorks() {
             Getting Started{' '}
             <span className="bg-gradient-to-br from-red-500 to-red-700 bg-clip-text text-transparent">Is Simple.</span>
           </h2>
-          <p className="text-[#9ca3af] text-[0.9rem] max-w-[380px] mx-auto leading-relaxed mt-4">
+          <p className="text-gray-500 text-[0.9rem] max-w-[380px] mx-auto leading-relaxed mt-4">
             Three steps to transform your online presence.
           </p>
         </div>
@@ -90,7 +90,7 @@ export default function HowItWorks() {
                   {step.title}
                 </h3>
 
-                <p className="text-[#6b7280] text-[0.86rem] leading-relaxed max-w-[300px]">
+                <p className="text-gray-600 text-[0.86rem] leading-relaxed max-w-[300px]">
                   {step.desc}
                 </p>
               </div>

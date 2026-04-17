@@ -15,10 +15,10 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative bg-[#040404] bg-circuit">
+    <footer className="relative bg-white">
 
       {/* Top red accent */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-red-600/30 to-transparent" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
 
       {/* Main footer */}
       <div className="max-w-[1180px] mx-auto px-6 py-16">
@@ -26,10 +26,10 @@ export default function Footer() {
 
           {/* Brand */}
           <div>
-            <div className="font-['Space_Grotesk'] text-[1.5rem] font-extrabold text-white mb-4 tracking-tight">
+            <div className="font-['Space_Grotesk'] text-[1.5rem] font-extrabold text-[#0a0a0a] mb-4 tracking-tight">
               AI<span className="text-red-500">WWWEB</span>
             </div>
-            <p className="text-white/25 text-[0.84rem] leading-relaxed max-w-[240px] mb-5">
+            <p className="text-gray-600 text-[0.84rem] leading-relaxed max-w-[240px] mb-5">
               Custom websites, AI voice & text agents, and business phone numbers — everything you need to grow online.
             </p>
             <div className="flex items-center gap-2">
@@ -40,13 +40,13 @@ export default function Footer() {
 
           {/* Navigation */}
           <div>
-            <p className="text-[0.58rem] font-mono font-bold tracking-[4px] uppercase text-white/18 mb-5">Navigation</p>
+            <p className="text-[0.58rem] font-mono font-bold tracking-[4px] uppercase text-gray-500 mb-5">Navigation</p>
             <ul className="flex flex-col gap-3">
               {links.map((l) => (
                 <li key={l.id}>
                   <button
                     onClick={() => scroll(l.id)}
-                    className="text-white/30 text-[0.86rem] hover:text-white transition-colors duration-200 bg-transparent border-none cursor-pointer font-sans group flex items-center gap-2"
+                    className="text-gray-600 text-[0.86rem] hover:text-gray-700 transition-colors duration-200 bg-transparent border-none cursor-pointer font-sans group flex items-center gap-2"
                   >
                     <span className="w-0 h-px bg-red-500 group-hover:w-3 transition-all duration-300" />
                     {l.label}
@@ -58,15 +58,15 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <p className="text-[0.58rem] font-mono font-bold tracking-[4px] uppercase text-white/18 mb-5">Contact</p>
+            <p className="text-[0.58rem] font-mono font-bold tracking-[4px] uppercase text-gray-500 mb-5">Contact</p>
             <ul className="flex flex-col gap-3">
               <li>
-                <a href="mailto:hello@aiwwweb.com" className="text-white/30 text-[0.86rem] hover:text-white transition-colors duration-200 font-mono">
+                <a href="mailto:hello@aiwwweb.com" className="text-gray-600 text-[0.86rem] hover:text-gray-700 transition-colors duration-200 font-mono">
                   hello@aiwwweb.com
                 </a>
               </li>
               <li>
-                <span className="text-white/22 text-[0.86rem] font-mono">Florida, USA</span>
+                <span className="text-gray-500 text-[0.86rem] font-mono">Florida, USA</span>
               </li>
               <li className="mt-3">
                 <a
@@ -87,14 +87,14 @@ export default function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-white/[0.04]">
+      <div className="border-t border-gray-100">
         <div className="max-w-[1180px] mx-auto px-6 py-5 flex flex-col md:flex-row items-center justify-between gap-3">
-          <p className="text-white/16 text-[0.75rem] font-mono">&copy; 2026 AI WWWeb. All rights reserved.</p>
+          <p className="text-gray-500 text-[0.75rem] font-mono">&copy; 2026 AI WWWeb. All rights reserved.</p>
           <div className="flex items-center gap-4">
-            <p className="text-white/12 text-[0.72rem] font-mono tracking-wider">BUILT WITH AI &middot; POWERED BY RESULTS</p>
+            <p className="text-gray-400 text-[0.72rem] font-mono tracking-wider">BUILT WITH AI &middot; POWERED BY RESULTS</p>
             <a
               href="/login"
-              className="text-white/20 text-[0.68rem] font-mono hover:text-white/50 transition-colors duration-200 border border-white/[0.06] hover:border-white/20 px-2.5 py-1 rounded"
+              className="text-gray-500 text-[0.68rem] font-mono hover:text-gray-700 transition-colors duration-200 border border-gray-200 hover:border-gray-300 px-2.5 py-1 rounded"
             >
               Client Login
             </a>

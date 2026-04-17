@@ -1,117 +1,220 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 export default function GridBackground() {
-  const staticRef = useRef<SVGSVGElement>(null);
-  const revealRef = useRef<SVGSVGElement>(null);
-  const [show, setShow] = useState(false);
-  const offsetRef = useRef({ x: 0, y: 0 });
-  const mouseRef  = useRef({ x: -9999, y: -9999 });
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const mouseRef = useRef({ x: -999, y: -999 });
 
   useEffect(() => {
-    const handleScroll = () => setShow(window.scrollY > window.innerHeight * 0.7);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
-  useEffect(() => {
-    const CELL = 40;
+    let w = 0, h = 0;
+    const CELL = 44;
+    const REPEL_RADIUS = 160;
+    const REPEL_FORCE = 14;
 
-    function buildGrid(svg: SVGSVGElement, id: string) {
-      const w  = window.innerWidth + CELL * 2;
-      const h  = window.innerHeight + CELL * 2;
-      const ns = 'http://www.w3.org/2000/svg';
-      svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
-      svg.setAttribute('width', String(w));
-      svg.setAttribute('height', String(h));
-      svg.innerHTML = '';
-
-      const defs = document.createElementNS(ns, 'defs');
-      const pat  = document.createElementNS(ns, 'pattern');
-      pat.setAttribute('id', id);
-      pat.setAttribute('width', String(CELL));
-      pat.setAttribute('height', String(CELL));
-      pat.setAttribute('patternUnits', 'userSpaceOnUse');
-
-      const path = document.createElementNS(ns, 'path');
-      path.setAttribute('d', `M ${CELL} 0 L 0 0 0 ${CELL}`);
-      path.setAttribute('fill', 'none');
-      path.setAttribute('stroke', 'currentColor');
-      path.setAttribute('stroke-width', id === 'gp-s' ? '0.5' : '0.8');
-
-      pat.appendChild(path);
-      defs.appendChild(pat);
-      svg.appendChild(defs);
-
-      const rect = document.createElementNS(ns, 'rect');
-      rect.setAttribute('width', '100%');
-      rect.setAttribute('height', '100%');
-      rect.setAttribute('fill', `url(#${id})`);
-      svg.appendChild(rect);
-
-      return pat;
+    interface Particle {
+      x: number; y: number;
+      baseX: number; baseY: number;
+      vx: number; vy: number;
+      size: number; opacity: number;
+      phase: number;
     }
 
-    let patStatic: SVGPatternElement | null = null;
-    let patReveal: SVGPatternElement | null = null;
+    let particles: Particle[] = [];
 
-    function init() {
-      if (staticRef.current) patStatic = buildGrid(staticRef.current, 'gp-s');
-      if (revealRef.current) patReveal = buildGrid(revealRef.current, 'gp-r');
-    }
-
-    init();
-    window.addEventListener('resize', init);
-
-    let animId: number;
-    function tick() {
-      offsetRef.current.x = (offsetRef.current.x + 0.3) % CELL;
-      offsetRef.current.y = (offsetRef.current.y + 0.3) % CELL;
-
-      if (patStatic) {
-        patStatic.setAttribute('x', String(offsetRef.current.x));
-        patStatic.setAttribute('y', String(offsetRef.current.y));
-      }
-      if (patReveal) {
-        patReveal.setAttribute('x', String(offsetRef.current.x));
-        patReveal.setAttribute('y', String(offsetRef.current.y));
-      }
-
-      const mx = mouseRef.current.x;
-      const my = mouseRef.current.y;
-      if (revealRef.current && mx > -999) {
-        revealRef.current.style.maskImage = `radial-gradient(350px circle at ${mx}px ${my}px, black, transparent)`;
-        (revealRef.current.style as any).webkitMaskImage = `radial-gradient(350px circle at ${mx}px ${my}px, black, transparent)`;
-      }
-
-      animId = requestAnimationFrame(tick);
-    }
-    tick();
-
-    const handleMouseMove = (e: MouseEvent) => {
-      mouseRef.current = { x: e.clientX, y: e.clientY };
-      if (revealRef.current) revealRef.current.classList.add('!opacity-25');
-    };
-    const handleMouseLeave = () => {
-      if (revealRef.current) revealRef.current.classList.remove('!opacity-25');
+    const resize = () => {
+      w = window.innerWidth;
+      h = document.documentElement.scrollHeight;
+      canvas.width = w * 1.5;
+      canvas.height = window.innerHeight * 1.5;
+      canvas.style.width = w + 'px';
+      canvas.style.height = window.innerHeight + 'px';
+      seedParticles();
     };
 
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseleave', handleMouseLeave);
+    const seedParticles = () => {
+      // ~1 particle per 25000px² of visible area
+      const count = Math.min(80, Math.floor((w * window.innerHeight) / 16000));
+      particles = [];
+      for (let i = 0; i < count; i++) {
+        const x = Math.random() * w * 1.5;
+        const y = Math.random() * window.innerHeight * 1.5;
+        particles.push({
+          x, y, baseX: x, baseY: y,
+          vx: (Math.random() - 0.5) * 0.3,
+          vy: (Math.random() - 0.5) * 0.3,
+          size: 3 + Math.random() * 4,
+          opacity: 0.25 + Math.random() * 0.25,
+          phase: Math.random() * Math.PI * 2,
+        });
+      }
+    };
+
+    let time = 0;
+    let gridOffset = 0;
+    let raf: number;
+
+    const draw = () => {
+      time += 0.016;
+      gridOffset = (gridOffset + 0.15) % CELL;
+      const cw = canvas.width;
+      const ch = canvas.height;
+      ctx.clearRect(0, 0, cw, ch);
+
+      const mx = mouseRef.current.x * 1.5;
+      const my = (mouseRef.current.y) * 1.5;
+
+      // ── Grid lines ──
+      ctx.strokeStyle = 'rgba(0,0,0,0.025)';
+      ctx.lineWidth = 0.5;
+
+      const cellScaled = CELL * 1.5;
+      const startX = (gridOffset * 1.5) % cellScaled;
+      const startY = (gridOffset * 1.5) % cellScaled;
+
+      // Vertical lines
+      for (let x = startX; x < cw; x += cellScaled) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, ch);
+        ctx.stroke();
+      }
+      // Horizontal lines
+      for (let y = startY; y < ch; y += cellScaled) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(cw, y);
+        ctx.stroke();
+      }
+
+      // Red accent lines near mouse
+      if (mx > 0 && my > 0) {
+        const accentR = 200 * 1.5;
+        for (let x = startX; x < cw; x += cellScaled) {
+          const dx = Math.abs(x - mx);
+          if (dx < accentR) {
+            const alpha = 0.06 * (1 - dx / accentR);
+            ctx.strokeStyle = `rgba(220,38,38,${alpha})`;
+            ctx.lineWidth = 0.8;
+            ctx.beginPath();
+            ctx.moveTo(x, Math.max(0, my - accentR));
+            ctx.lineTo(x, Math.min(ch, my + accentR));
+            ctx.stroke();
+          }
+        }
+        for (let y = startY; y < ch; y += cellScaled) {
+          const dy = Math.abs(y - my);
+          if (dy < accentR) {
+            const alpha = 0.06 * (1 - dy / accentR);
+            ctx.strokeStyle = `rgba(220,38,38,${alpha})`;
+            ctx.lineWidth = 0.8;
+            ctx.beginPath();
+            ctx.moveTo(Math.max(0, mx - accentR), y);
+            ctx.lineTo(Math.min(cw, mx + accentR), y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      // ── Particles ──
+      const repelR = REPEL_RADIUS * 1.5;
+
+      for (const p of particles) {
+        // Drift
+        p.x += p.vx;
+        p.y += p.vy;
+
+        // Wrap
+        if (p.x < 0) p.x = cw;
+        if (p.x > cw) p.x = 0;
+        if (p.y < 0) p.y = ch;
+        if (p.y > ch) p.y = 0;
+
+        // Mouse repulsion — strong push away
+        if (mx > -500 && my > -500) {
+          const dx = p.x - mx;
+          const dy = p.y - my;
+          const distSq = dx * dx + dy * dy;
+          const repelRSq = repelR * repelR;
+          if (distSq < repelRSq && distSq > 1) {
+            const dist = Math.sqrt(distSq);
+            const strength = ((repelR - dist) / repelR);
+            const force = strength * strength * REPEL_FORCE;
+            p.vx += (dx / dist) * force * 0.3;
+            p.vy += (dy / dist) * force * 0.3;
+          }
+        }
+
+        // Dampen velocity so particles slow down after push
+        p.vx *= 0.96;
+        p.vy *= 0.96;
+
+        // Gentle drift back to keep them moving
+        if (Math.abs(p.vx) < 0.1) p.vx += (Math.random() - 0.5) * 0.05;
+        if (Math.abs(p.vy) < 0.1) p.vy += (Math.random() - 0.5) * 0.05;
+
+        // Pulse
+        const pulse = 1 + Math.sin(time * 1.5 + p.phase) * 0.3;
+        const sz = p.size * pulse;
+        const alpha = p.opacity * pulse;
+
+        // Outer glow
+        const grd = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, sz * 4);
+        grd.addColorStop(0, `rgba(220,38,38,${alpha * 0.7})`);
+        grd.addColorStop(0.4, `rgba(220,38,38,${alpha * 0.2})`);
+        grd.addColorStop(1, 'rgba(220,38,38,0)');
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, sz * 4, 0, Math.PI * 2);
+        ctx.fillStyle = grd;
+        ctx.fill();
+
+        // Bright core
+        const coreGrd = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, sz);
+        coreGrd.addColorStop(0, `rgba(255,120,100,${alpha * 1.2})`);
+        coreGrd.addColorStop(0.5, `rgba(220,38,38,${alpha})`);
+        coreGrd.addColorStop(1, `rgba(180,20,20,${alpha * 0.3})`);
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, sz, 0, Math.PI * 2);
+        ctx.fillStyle = coreGrd;
+        ctx.fill();
+      }
+
+      raf = requestAnimationFrame(draw);
+    };
+
+    resize();
+    draw();
+
+    const onResize = () => resize();
+    window.addEventListener('resize', onResize);
+
+    const onMouse = (e: MouseEvent) => {
+      mouseRef.current = { x: e.clientX, y: e.clientY};
+    };
+    const onLeave = () => {
+      mouseRef.current = { x: -999, y: -999 };
+    };
+    document.addEventListener('mousemove', onMouse);
+    document.addEventListener('mouseleave', onLeave);
 
     return () => {
-      window.removeEventListener('resize', init);
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseleave', handleMouseLeave);
-      cancelAnimationFrame(animId);
+      cancelAnimationFrame(raf);
+      window.removeEventListener('resize', onResize);
+      document.removeEventListener('mousemove', onMouse);
+      document.removeEventListener('mouseleave', onLeave);
     };
   }, []);
 
   return (
-    <div className={`fixed inset-0 z-0 pointer-events-none overflow-hidden transition-opacity duration-600 ${show ? 'opacity-100' : 'opacity-0'}`}>
-      <svg ref={staticRef} className="absolute inset-0 w-full h-full opacity-[0.03] text-neutral-400" />
-      <svg ref={revealRef} className="absolute inset-0 w-full h-full opacity-0 transition-opacity duration-400 text-red-400" />
-    </div>
+    <canvas
+      ref={canvasRef}
+      className="fixed inset-0 z-0 pointer-events-none"
+      style={{ imageRendering: 'auto' }}
+    />
   );
 }

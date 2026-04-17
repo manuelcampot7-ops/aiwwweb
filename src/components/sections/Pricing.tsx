@@ -1,5 +1,6 @@
 "use client";
-import React from 'react';
+import React, { useState } from 'react';
+import IntakeFormModal from './IntakeFormModal';
 
 const plans = [
   {
@@ -57,10 +58,12 @@ const plans = [
 ];
 
 export default function Pricing() {
-  return (
-    <section id="pricing" className="relative py-24 md:py-32 bg-[#f8f8f8] bg-dots overflow-hidden">
+  const [activePlan, setActivePlan] = useState<'Starter' | 'Professional' | 'Enterprise' | null>(null);
 
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#e0e0e0] to-transparent" />
+  return (
+    <section id="pricing" className="relative py-24 md:py-32 bg-white overflow-hidden">
+
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
 
       {/* Parallax decorative */}
       <div data-parallax="0.1" className="absolute top-20 left-8 w-20 h-20 border border-red-200/20 rounded-full pointer-events-none hidden md:block" />
@@ -78,7 +81,7 @@ export default function Pricing() {
           <h2 className="font-['Space_Grotesk'] text-[clamp(2rem,4.5vw,3.8rem)] font-extrabold tracking-[-0.04em] text-[#0a0a0a] leading-[1.04] mb-3 sr-words">
             Simple, Transparent Pricing
           </h2>
-          <p className="text-[#9ca3af] text-[0.9rem] max-w-[380px] mx-auto leading-relaxed">
+          <p className="text-gray-500 text-[0.9rem] max-w-[380px] mx-auto leading-relaxed">
             No hidden fees. No long-term contracts. Just results.
           </p>
         </div>
@@ -93,7 +96,7 @@ export default function Pricing() {
                 className={`${animations[i]} sr-delay-${i + 1} relative flex flex-col transition-all duration-500 hover:-translate-y-1 ${
                   plan.dark
                     ? 'bg-[#0a0a0a] border-2 glow-border-animated md:scale-[1.04] z-10 hover:shadow-[0_28px_80px_rgba(220,38,38,0.12)]'
-                    : 'bg-white border border-[#e2e2e2] hover:border-[#c8c8c8] hover:shadow-[0_16px_50px_rgba(0,0,0,0.07)]'
+                    : 'bg-white border border-gray-200 hover:border-[#c8c8c8] hover:shadow-[0_16px_50px_rgba(0,0,0,0.07)]'
                 }`}
               >
                 {/* Popular badge */}
@@ -105,23 +108,23 @@ export default function Pricing() {
 
                 <div className="p-7 md:p-8 flex flex-col h-full">
                   <div className="mb-7">
-                    <p className={`text-[0.6rem] font-mono font-bold tracking-[4px] uppercase mb-3 ${plan.dark ? 'text-white/35' : 'text-[#aaa]'}`}>{plan.name}</p>
+                    <p className={`text-[0.6rem] font-mono font-bold tracking-[4px] uppercase mb-3 ${plan.dark ? 'text-white/35' : 'text-gray-500'}`}>{plan.name}</p>
 
                     <div className="flex items-end gap-2 mb-1">
                       <span className={`font-['Space_Grotesk'] text-[2.8rem] font-extrabold leading-none tracking-tight ${plan.dark ? 'text-white' : 'text-[#0a0a0a]'}`}>{plan.price}</span>
                       {plan.price !== 'Custom' && (
-                        <span className={`text-[0.8rem] mb-2 ${plan.dark ? 'text-white/28' : 'text-[#bbb]'}`}>/mo</span>
+                        <span className={`text-[0.8rem] mb-2 ${plan.dark ? 'text-white/28' : 'text-gray-400'}`}>/mo</span>
                       )}
                     </div>
                     {plan.setup !== 'Custom' && (
-                      <p className={`text-[0.74rem] font-mono mb-3 ${plan.dark ? 'text-white/22' : 'text-[#ccc]'}`}>
+                      <p className={`text-[0.74rem] font-mono mb-3 ${plan.dark ? 'text-white/22' : 'text-gray-400'}`}>
                         + {plan.setup} one-time setup
                       </p>
                     )}
 
-                    <div className={`h-px mb-4 ${plan.dark ? 'bg-white/[0.06]' : 'bg-[#ebebeb]'}`} />
+                    <div className={`h-px mb-4 ${plan.dark ? 'bg-white/[0.06]' : 'bg-gray-100'}`} />
 
-                    <p className={`text-[0.83rem] leading-relaxed ${plan.dark ? 'text-white/32' : 'text-[#6b7280]'}`}>{plan.desc}</p>
+                    <p className={`text-[0.83rem] leading-relaxed ${plan.dark ? 'text-white/32' : 'text-gray-600'}`}>{plan.desc}</p>
                   </div>
 
                   <ul className="flex flex-col gap-2.5 mb-7 flex-1">
@@ -132,17 +135,17 @@ export default function Pricing() {
                             <polyline points="2,6 5,9 10,3" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
                           </svg>
                         </div>
-                        <span className={`text-[0.82rem] leading-relaxed ${plan.dark ? 'text-white/40' : 'text-[#6b7280]'}`}>{f}</span>
+                        <span className={`text-[0.82rem] leading-relaxed ${plan.dark ? 'text-white/40' : 'text-gray-600'}`}>{f}</span>
                       </li>
                     ))}
                   </ul>
 
                   <button
-                    onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                    onClick={() => setActivePlan(plan.name as 'Starter' | 'Professional' | 'Enterprise')}
                     className={`btn-shimmer w-full py-3.5 font-extrabold text-[0.85rem] font-mono tracking-wide cursor-pointer transition-all duration-300 hover:-translate-y-0.5 ${
                       plan.dark
                         ? 'bg-gradient-to-r from-red-600 to-red-700 text-white hover:from-red-500 hover:to-red-600 shadow-[0_4px_24px_rgba(220,38,38,0.3)] hover:shadow-[0_8px_36px_rgba(220,38,38,0.45)]'
-                        : 'border border-[#d8d8d8] text-[#777] hover:border-red-300 hover:text-red-600 hover:shadow-[0_4px_16px_rgba(220,38,38,0.08)]'
+                        : 'border border-gray-200 text-gray-600 hover:border-red-300 hover:text-red-600 hover:shadow-[0_4px_16px_rgba(220,38,38,0.08)]'
                     }`}
                   >
                     {plan.cta}
@@ -154,6 +157,10 @@ export default function Pricing() {
         </div>
 
       </div>
+
+      {activePlan && (
+        <IntakeFormModal plan={activePlan} onClose={() => setActivePlan(null)} />
+      )}
     </section>
   );
 }
