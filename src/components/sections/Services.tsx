@@ -84,7 +84,7 @@ export default function Services() {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             // Delay based on transitionDelay to stagger
-            const delay = parseInt(entry.target.style.transitionDelay || '0');
+            const delay = parseInt((entry.target as HTMLElement).style.transitionDelay || '0');
             setTimeout(() => entry.target.classList.add('in-view'), delay);
           }
         });
