@@ -41,8 +41,10 @@ export default function IntakeFormModal({ plan, onClose }: IntakeFormModalProps)
   const totalSteps = steps.length;
 
   const canNext = () => {
-    if (step === 0) return form.firstName && form.email && form.phone;
-    if (step === 1) return form.industry;
+    if (step === 0) return form.firstName && form.lastName && form.email && form.phone;
+    if (step === 1) return form.companyName && form.industry;
+    if (step === 2) return form.description && form.colors && (isPro || form.extra);
+    if (step === 3 && isPro) return form.extra;
     return true;
   };
 
@@ -145,7 +147,7 @@ export default function IntakeFormModal({ plan, onClose }: IntakeFormModalProps)
                       <input className={inputClass} placeholder="John" value={form.firstName} onChange={e => set('firstName', e.target.value)} />
                     </div>
                     <div>
-                      <label className={labelClass}>Last Name</label>
+                      <label className={labelClass}>Last Name *</label>
                       <input className={inputClass} placeholder="Smith" value={form.lastName} onChange={e => set('lastName', e.target.value)} />
                     </div>
                   </div>
@@ -164,7 +166,7 @@ export default function IntakeFormModal({ plan, onClose }: IntakeFormModalProps)
               {step === 1 && (
                 <div className="flex flex-col gap-4">
                   <div>
-                    <label className={labelClass}>Business Name</label>
+                    <label className={labelClass}>Business Name *</label>
                     <input className={inputClass} placeholder="My Business LLC" value={form.companyName} onChange={e => set('companyName', e.target.value)} />
                   </div>
                   <div>
@@ -193,7 +195,7 @@ export default function IntakeFormModal({ plan, onClose }: IntakeFormModalProps)
               {step === 2 && (
                 <div className="flex flex-col gap-4">
                   <div>
-                    <label className={labelClass}>What are you looking for?</label>
+                    <label className={labelClass}>What are you looking for? *</label>
                     <textarea
                       className={inputClass + ' min-h-[100px] resize-none'}
                       placeholder="Tell us about your ideal website — what pages you need, what you want visitors to do, any features you have in mind..."
@@ -203,12 +205,12 @@ export default function IntakeFormModal({ plan, onClose }: IntakeFormModalProps)
                     />
                   </div>
                   <div>
-                    <label className={labelClass}>Preferred Colors / Style</label>
+                    <label className={labelClass}>Preferred Colors / Style *</label>
                     <input className={inputClass} placeholder="e.g. Blue and white, modern and clean" value={form.colors} onChange={e => set('colors', e.target.value)} />
                   </div>
                   {!isPro && (
                     <div>
-                      <label className={labelClass}>Anything else we should know?</label>
+                      <label className={labelClass}>Anything else we should know? *</label>
                       <textarea
                         className={inputClass + ' min-h-[60px] resize-none'}
                         placeholder="Current website URL, competitors you admire, timeline..."
@@ -225,7 +227,7 @@ export default function IntakeFormModal({ plan, onClose }: IntakeFormModalProps)
               {step === 3 && isPro && (
                 <div className="flex flex-col gap-4">
                   <div>
-                    <label className={labelClass}>How many calls/messages does your business get per week?</label>
+                    <label className={labelClass}>How many calls/messages does your business get per week? *</label>
                     <div className="grid grid-cols-2 gap-2">
                       {['Less than 10', '10–30', '30–100', '100+'].map(opt => (
                         <button
@@ -240,7 +242,7 @@ export default function IntakeFormModal({ plan, onClose }: IntakeFormModalProps)
                     </div>
                   </div>
                   <div>
-                    <label className={labelClass}>What do customers usually ask about?</label>
+                    <label className={labelClass}>What do customers usually ask about? *</label>
                     <textarea
                       className={inputClass + ' min-h-[80px] resize-none'}
                       placeholder="e.g. Pricing, availability, scheduling appointments, product details..."
@@ -251,7 +253,7 @@ export default function IntakeFormModal({ plan, onClose }: IntakeFormModalProps)
                   </div>
                   {isEnterprise && (
                     <div>
-                      <label className={labelClass}>How many locations do you have?</label>
+                      <label className={labelClass}>How many locations do you have? *</label>
                       <input className={inputClass} placeholder="e.g. 3 locations in Florida" value={form.companyName} onChange={e => set('companyName', e.target.value)} />
                     </div>
                   )}
