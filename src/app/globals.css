@@ -427,6 +427,66 @@ body {
 .sr-delay-7 { transition-delay: 0.56s !important; }
 .sr-delay-8 { transition-delay: 0.64s !important; }
 
+/* Flip-in on X axis — card-like entrance */
+.sr-element-flip {
+  opacity: 0;
+  transform: perspective(900px) rotateX(22deg) translateY(24px);
+  transform-origin: top center;
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.sr-element-flip.visible {
+  opacity: 1;
+  transform: perspective(900px) rotateX(0deg) translateY(0) !important;
+}
+
+/* Slide up — smoother vertical drift than sr-element */
+.sr-element-slide-up {
+  opacity: 0;
+  transform: translateY(64px);
+  transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1), transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.sr-element-slide-up.visible {
+  opacity: 1;
+  transform: translateY(0) !important;
+}
+
+/* Underline draw — for inline text highlights */
+.sr-underline-draw {
+  position: relative;
+  display: inline-block;
+}
+.sr-underline-draw::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 2px;
+  width: 100%;
+  background: linear-gradient(90deg, rgba(220,38,38,0.9), rgba(220,38,38,0.3));
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.9s cubic-bezier(0.65, 0, 0.35, 1);
+  transition-delay: 0.2s;
+}
+.sr-underline-draw.visible::after {
+  transform: scaleX(1) !important;
+}
+
+/* Mask wipe — element revealed by a left→right clip */
+.sr-mask-wipe {
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 1.05s cubic-bezier(0.76, 0, 0.24, 1);
+}
+.sr-mask-wipe.visible {
+  clip-path: inset(0 0% 0 0) !important;
+}
+
+/* Scroll-velocity skew — driven by JS, subtle blur-like motion on fast scroll */
+[data-scroll-skew] {
+  will-change: transform;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 /* Section divider draw */
 @keyframes divider-draw {
   from { transform: scaleX(0); }

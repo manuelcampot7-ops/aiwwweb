@@ -41,7 +41,7 @@ export default function FAQ() {
           {faqs.map((faq, i) => (
             <div
               key={i}
-              className={`border-b transition-all duration-300 ${
+              className={`sr-element-slide-up sr-delay-${Math.min(i + 1, 6)} border-b transition-all duration-300 ${
                 i === 0 ? 'border-t border-b-gray-200' : 'border-b-gray-200'
               } ${openIndex === i ? 'border-t-red-500 bg-red-50/30' : ''}`}
             >

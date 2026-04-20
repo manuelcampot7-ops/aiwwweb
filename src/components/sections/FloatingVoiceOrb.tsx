@@ -23,6 +23,7 @@ export default function FloatingVoiceOrb() {
   const targetT   = useRef(0);
   const currentT  = useRef(0);
   const smoothRaf = useRef<number>(0);
+  const maxScale  = useRef(3); // shrinks on mobile so particles don't collide with hero text
 
   // Mouse tracking refs (relative to orb center, normalized -1 to 1)
   const mouseX = useRef(0);
@@ -30,6 +31,16 @@ export default function FloatingVoiceOrb() {
   const isHovering  = useRef(false);
   const hoverSmooth = useRef(0); // 0=not hovering, 1=fully hovering
   const clickPulse  = useRef(0); // burst animation on click
+
+  /* ── Responsive max scale ── */
+  useEffect(() => {
+    const update = () => {
+      maxScale.current = window.innerWidth < 768 ? 1.9 : 3;
+    };
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
 
   /* ── Scroll target ── */
   useEffect(() => {
@@ -55,7 +66,8 @@ export default function FloatingVoiceOrb() {
       const cx = rect.left + rect.width / 2;
       const cy = rect.top + rect.height / 2;
       // Normalize to -1..1 relative to orb center, accounting for scale
-      const scale = 3 - easeOutCubic(currentT.current) * 2;
+      const ms = maxScale.current;
+      const scale = ms - easeOutCubic(currentT.current) * (ms - 1);
       const halfSize = 36 * scale;
       mouseX.current = clamp01(Math.abs((e.clientX - cx) / halfSize)) * Math.sign(e.clientX - cx);
       mouseY.current = clamp01(Math.abs((e.clientY - cy) / halfSize)) * Math.sign(e.clientY - cy);
@@ -89,7 +101,8 @@ export default function FloatingVoiceOrb() {
     if (clickPulse.current < 0.01) clickPulse.current = 0;
 
     const t = easeOutCubic(currentT.current);
-    const scale = 3 - t * 2;
+    const ms = maxScale.current;
+    const scale = ms - t * (ms - 1);
     const offsetXpct = (1 - t) * -50;
     const offsetYpct = (1 - t) * -50;
     const cornerAdjustX = (1 - t) * 28;

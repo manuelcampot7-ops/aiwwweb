@@ -9,7 +9,7 @@ export default function BrandMarquee() {
   const services = ['WEBSITES', 'AI VOICE AGENTS', 'AI TEXT AGENTS', 'BUSINESS PHONES', 'LEAD AUTOMATION', 'CUSTOM DOMAINS', '24/7 SUPPORT'];
 
   return (
-    <div className="relative bg-white py-12 md:py-16 overflow-hidden border-y border-gray-200 group/strip">
+    <div className="sr-element-blur relative bg-white py-12 md:py-16 overflow-hidden border-y border-gray-200 group/strip">
 
       {/* Top accent line */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-red-500/30 to-transparent" />

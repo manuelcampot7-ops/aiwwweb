@@ -134,7 +134,7 @@ export default function Services() {
           </div>
           <h2 className="font-['Space_Grotesk'] text-[clamp(2rem,4.5vw,3.6rem)] font-extrabold tracking-[-0.04em] text-[#0a0a0a] leading-[1.06] max-w-[600px] mx-auto">
             Everything Your Business Needs To{' '}
-            <span className="bg-gradient-to-r from-red-500 via-red-600 to-red-700 bg-clip-text text-transparent">Win Online</span>
+            <span className="sr-underline-draw bg-gradient-to-r from-red-500 via-red-600 to-red-700 bg-clip-text text-transparent">Win Online</span>
           </h2>
         </div>
 

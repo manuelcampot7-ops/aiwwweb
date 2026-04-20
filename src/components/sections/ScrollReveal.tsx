@@ -20,6 +20,7 @@ export default function ScrollReveal() {
     const selectors =
       '.sr-element, .sr-element-left, .sr-element-right, .sr-element-scale, ' +
       '.sr-element-rotate, .sr-element-blur, .sr-element-scale-rotate, ' +
+      '.sr-element-flip, .sr-element-slide-up, .sr-underline-draw, .sr-mask-wipe, ' +
       '.sr-clip-up, .sr-line-draw, .sr-text-reveal, .sr-words, .section-fade-in';
     const elements = document.querySelectorAll(selectors);
     elements.forEach((el) => observer.observe(el));
@@ -40,9 +41,12 @@ export default function ScrollReveal() {
 
     /* ── Parallax on scroll ── */
     const parallaxEls = document.querySelectorAll<HTMLElement>('[data-parallax]');
-    if (parallaxEls.length === 0) {
-      return () => observer.disconnect();
-    }
+    const skewEls = document.querySelectorAll<HTMLElement>('[data-scroll-skew]');
+
+    let lastScrollY = window.scrollY;
+    let lastScrollTime = performance.now();
+    let skewRaf = 0;
+    let currentSkew = 0;
 
     const handleParallax = () => {
       for (const el of parallaxEls) {
@@ -54,12 +58,44 @@ export default function ScrollReveal() {
         el.style.transform = `translateY(${offset}px)`;
       }
     };
-    window.addEventListener('scroll', handleParallax, { passive: true });
-    handleParallax();
+
+    /* ── Scroll-velocity skew ── */
+    const updateVelocity = () => {
+      const now = performance.now();
+      const dy = window.scrollY - lastScrollY;
+      const dt = Math.max(now - lastScrollTime, 1);
+      lastScrollY = window.scrollY;
+      lastScrollTime = now;
+      // px/ms → degrees, capped to ±5deg
+      const target = Math.max(-5, Math.min(5, dy / dt * 2));
+      // Ease back to 0 when not scrolling
+      currentSkew += (target - currentSkew) * 0.18;
+      if (Math.abs(currentSkew) < 0.02) currentSkew = 0;
+
+      for (const el of skewEls) {
+        const intensity = parseFloat(el.getAttribute('data-scroll-skew') || '1');
+        el.style.transform = `skewY(${currentSkew * intensity}deg)`;
+      }
+      skewRaf = requestAnimationFrame(updateVelocity);
+    };
+
+    const hasWork = parallaxEls.length > 0 || skewEls.length > 0;
+    if (!hasWork) {
+      return () => observer.disconnect();
+    }
+
+    if (parallaxEls.length > 0) {
+      window.addEventListener('scroll', handleParallax, { passive: true });
+      handleParallax();
+    }
+    if (skewEls.length > 0) {
+      skewRaf = requestAnimationFrame(updateVelocity);
+    }
 
     return () => {
       observer.disconnect();
-      window.removeEventListener('scroll', handleParallax);
+      if (parallaxEls.length > 0) window.removeEventListener('scroll', handleParallax);
+      if (skewRaf) cancelAnimationFrame(skewRaf);
     };
   }, []);
 

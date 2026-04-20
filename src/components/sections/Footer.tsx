@@ -25,7 +25,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
 
           {/* Brand */}
-          <div>
+          <div className="sr-element-blur">
             <div className="font-['Space_Grotesk'] text-[1.5rem] font-extrabold text-[#0a0a0a] mb-4 tracking-tight">
               AI<span className="text-red-500">WWWEB</span>
             </div>
@@ -39,7 +39,7 @@ export default function Footer() {
           </div>
 
           {/* Navigation */}
-          <div>
+          <div className="sr-element-slide-up sr-delay-1">
             <p className="text-[0.58rem] font-mono font-bold tracking-[4px] uppercase text-gray-500 mb-5">Navigation</p>
             <ul className="flex flex-col gap-3">
               {links.map((l) => (
@@ -57,7 +57,7 @@ export default function Footer() {
           </div>
 
           {/* Contact */}
-          <div>
+          <div className="sr-element-slide-up sr-delay-2">
             <p className="text-[0.58rem] font-mono font-bold tracking-[4px] uppercase text-gray-500 mb-5">Contact</p>
             <ul className="flex flex-col gap-3">
               <li>
